@@ -1,5 +1,6 @@
 package br.com.ggdio;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -9,6 +10,9 @@ import java.util.concurrent.Executors;
 import com.orbitz.consul.Consul;
 import com.orbitz.consul.model.ConsulResponse;
 import com.orbitz.consul.model.health.ServiceHealth;
+
+import br.com.ggdio.microservice.Microservice;
+import br.com.ggdio.microservice.ServiceHandler;
 
 /**
  * Hello world!
@@ -21,6 +25,13 @@ public class App {
 	private static List<Microservice> microservices;
 
 	private static ExecutorService executor;
+	
+	private static List<String> shoppingCart = new ArrayList<>();
+	{
+		shoppingCart.add("apple");
+		shoppingCart.add("banana");
+		shoppingCart.add("200g of meat");
+	}
 	
 	public static void main(String[] args) throws Exception {
 		ConsulResponse<List<ServiceHealth>> healthyServiceInstances = consul.healthClient().getHealthyServiceInstances("data-ingestion");
@@ -37,20 +48,24 @@ public class App {
 
 	private static void build() {
 		microservices = Arrays.asList(
-				// INGESTION
-				buildMicroservice("data-ingestion", 6061, "DEV"),
-				buildMicroservice("data-ingestion", 6062, "HML"),
-				buildMicroservice("data-ingestion", 6063, "PRD"),
+				new ShoppingCartMicroservice(6061),
+				new ShoppingCartMicroservice(6062),
+				new ShoppingCartMicroservice(6063)
 				
-				// STREAMING
-				buildMicroservice("data-streaming", 7061, "DEV"),
-				buildMicroservice("data-streaming", 7061, "HML"),
-				buildMicroservice("data-streaming", 7061, "PRD"),
-				
-				// INTEGRATION
-				buildMicroservice("data-integration", 7061, "DEV"),
-				buildMicroservice("data-integration", 7061, "HML"),
-				buildMicroservice("data-integration", 7061, "PRD")
+//				// INGESTION
+//				buildMicroservice("data-ingestion", 6061, "DEV"),
+//				buildMicroservice("data-ingestion", 6062, "HML"),
+//				buildMicroservice("data-ingestion", 6063, "PRD"),
+//				
+//				// STREAMING
+//				buildMicroservice("data-streaming", 7061, "DEV"),
+//				buildMicroservice("data-streaming", 7061, "HML"),
+//				buildMicroservice("data-streaming", 7061, "PRD"),
+//				
+//				// INTEGRATION
+//				buildMicroservice("data-integration", 7061, "DEV"),
+//				buildMicroservice("data-integration", 7061, "HML"),
+//				buildMicroservice("data-integration", 7061, "PRD")
 		);
 	}
 	
@@ -169,8 +184,8 @@ public class App {
 		System.out.println();
 	}
 
-	private static Microservice buildMicroservice(String name, int port, String environment) {
-		return new Microservice(name, port, 5L, environment, name);
+	private static Microservice buildMicroservice(String name, int port, String environment, ServiceHandler serviceHandler) {
+		return new Microservice(name, port, serviceHandler, environment, name);
 	}
 
 }
