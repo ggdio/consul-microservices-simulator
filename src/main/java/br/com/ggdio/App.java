@@ -1,6 +1,5 @@
 package br.com.ggdio;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -8,14 +7,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.orbitz.consul.Consul;
-import com.orbitz.consul.model.ConsulResponse;
-import com.orbitz.consul.model.health.ServiceHealth;
 
 import br.com.ggdio.microservice.Microservice;
 import br.com.ggdio.microservice.ServiceHandler;
 
 /**
- * Hello world!
+ * Just a playground
  *
  */
 public class App {
@@ -26,16 +23,7 @@ public class App {
 
 	private static ExecutorService executor;
 	
-	private static List<String> shoppingCart = new ArrayList<>();
-	{
-		shoppingCart.add("apple");
-		shoppingCart.add("banana");
-		shoppingCart.add("200g of meat");
-	}
-	
 	public static void main(String[] args) throws Exception {
-		ConsulResponse<List<ServiceHealth>> healthyServiceInstances = consul.healthClient().getHealthyServiceInstances("data-ingestion");
-		
 		build();
 		
 		start();
@@ -48,9 +36,20 @@ public class App {
 
 	private static void build() {
 		microservices = Arrays.asList(
+				
+				// Shopping cart cluster
+				new ShoppingCartMicroservice(6060),
 				new ShoppingCartMicroservice(6061),
 				new ShoppingCartMicroservice(6062),
-				new ShoppingCartMicroservice(6063)
+				new ShoppingCartMicroservice(6063),
+				new ShoppingCartMicroservice(6064),
+				new ShoppingCartMicroservice(6065),
+				new ShoppingCartMicroservice(6066),
+				new ShoppingCartMicroservice(6067),
+				new ShoppingCartMicroservice(6068),
+				new ShoppingCartMicroservice(6069),
+				
+				new PaymentMicroservice(7071)
 				
 //				// INGESTION
 //				buildMicroservice("data-ingestion", 6061, "DEV"),

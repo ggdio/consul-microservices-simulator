@@ -7,6 +7,14 @@ import br.com.ggdio.microservice.Microservice;
 import br.com.ggdio.microservice.ServiceHandler;
 import br.com.ggdio.microservice.ServiceHandler.ServiceHandlerBuilder;
 
+/**
+ * Shopping microservice that sumarizes which items the client is buying
+ * 
+ * ...Don't mind the static refs, it's just XGH  :p 
+ * 
+ * @author Guilherme Dio
+ *
+ */
 public class ShoppingCartMicroservice extends Microservice {
 	
 	public static final String NAME = "shopping-cart";
@@ -14,7 +22,7 @@ public class ShoppingCartMicroservice extends Microservice {
 	private static List<String> shoppingCart = new ArrayList<>();
 
 	public ShoppingCartMicroservice(int port) {
-		super(NAME, port, buildRoutes(ServiceHandler.builder()), "shopping-cart", "caching");
+		super(NAME, port, buildRoutes(ServiceHandler.builder()), NAME, "caching");
 	}
 	
 	private static ServiceHandler buildRoutes(ServiceHandlerBuilder builder) {
