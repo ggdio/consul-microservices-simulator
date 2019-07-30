@@ -1,22 +1,40 @@
-# consul-microservices-simulator
-A microservices simulator for consul.io registering/discovering
+# Consul Microservices Simulator
+A simple registration simulator for [Consul](https://www.consul.io/) discovery service
 
-https://www.consul.io/
+### Download
 
-Usage:
+Install [git](http://git-scm.com/)
 
-[comment]: # (This actually is the most platform independent comment)
+```
+git clone git://github.com/ggdio/consul-microservices-simulator.git
+```
+
+..or you can download [sources as a zip](https://github.com/ggdio/consul-microservices-simulator/archive/master.zip)
+
+### Building and Running
+
+Install [Maven](http://maven.apache.org/)
+Install [Consul](https://www.consul.io/)
+
 
 *//start consul*
 <p>
-nohup $CONSUL_HOME/consul agent -dev &
 
-*// build simulator*
-<p>
+```bash
+nohup $CONSUL_HOME/consul agent -dev &
+```
+
+*// build simulator and run*
+
+```bash
 mvn clean package assembly:assembly
-<p>
 cd target/
-<p>
 java -jar consul-microservices-simulator-1.0-jar-with-dependencies.jar
+```
 
 *// use menu to interact with the simulator*
+
+
+## License
+
+* [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
